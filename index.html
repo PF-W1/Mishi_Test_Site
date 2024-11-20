@@ -1,28 +1,55 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Mishi Quest</title>
-  <meta name="description" content="Mishi Quest is a 2D platformer game where you play as a Mushroom named Mishi.">
-
   <meta charset="UTF-8">
+  <title>Fullscreen iFrame with Button</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    /* Basic styles */
+    body, html {
       margin: 0;
       padding: 0;
-      overflow: hidden;
+      height: 100%;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: calc(100% - 50px); /* Adjust for button height */
+      display: block;
+    }
+    #fullscreen-button {
+      height: 50px;
+      width: 100%;
+      font-size: 18px;
     }
   </style>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 <body>
+  <button id="fullscreen-button">Enter Fullscreen</button>
+  <!-- <iframe id="my-iframe" src="https://example.com">
+    Your browser does not support iframes.
+  </iframe> -->
   <iframe
+    id="my-iframe"
     frameBorder="0"
     src="https://itch.io/embed-upload/11994917?color=333333"
     allowFullScreen
-    width="1280"
-    height="720"
-  />
+    style="border:none;"
+  >Your browser does not support iframes.</iframe>
+
+  <script>
+    const iframe = document.getElementById('my-iframe');
+    const button = document.getElementById('fullscreen-button');
+
+    button.addEventListener('click', () => {
+      if (iframe.requestFullscreen) {
+        iframe.requestFullscreen();
+      } else if (iframe.webkitRequestFullscreen) { /* Safari */
+        iframe.webkitRequestFullscreen();
+      } else if (iframe.msRequestFullscreen) { /* IE11 */
+        iframe.msRequestFullscreen();
+      }
+    });
+  </script>
 </body>
 </html>
