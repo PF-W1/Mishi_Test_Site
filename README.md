@@ -12,3 +12,6 @@ Take revenge on the vegans.
  - switch off music (temp)
  - ask kia for design feedback
  - Add Google Analytics (Jurie)
+
+## version
+0.1
