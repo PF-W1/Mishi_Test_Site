@@ -1,58 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
-  <title>Mishi Quest</title>
-  <meta name="description" content="Mishi Quest is a top down shooter where you play as a Mushroom named Mishi.">
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    /* Basic styles */
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-    iframe {
-      border: none;
-      width: 100%;
-      height: calc(100% - 50px); /* Adjust for button height */
-      display: block;
-    }
-    #fullscreen-button {
-      height: 50px;
-      width: 100%;
-      font-size: 18px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itch.io Game Embed</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #000;
+        }
+        iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
+            display: none; /* Hide initially */
+        }
+        #play-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #007BFF;
+            color: white;
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #play-button:active {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <button id="fullscreen-button">Enter Fullscreen</button>
-  <!-- <iframe id="my-iframe" src="https://example.com">
-    Your browser does not support iframes.
-  </iframe> -->
-  <iframe
-    id="my-iframe"
-    frameBorder="0"
-    src="https://itch.io/embed-upload/12101631?color=333333"
-    allowFullScreen
-    style="border:none;"
-  >Your browser does not support iframes.</iframe>
+    <button id="play-button">Play Fullscreen</button>
+    <iframe id="game-frame" src="https://itch.io/embed-upload/12101631?color=333333"></iframe>
 
-  <script>
-    const iframe = document.getElementById('my-iframe');
-    const button = document.getElementById('fullscreen-button');
+    <script>
+        const playButton = document.getElementById('play-button');
+        const gameFrame = document.getElementById('game-frame');
 
-    button.addEventListener('click', () => {
-      if (iframe.requestFullscreen) {
-        iframe.requestFullscreen();
-      } else if (iframe.webkitRequestFullscreen) { /* Safari */
-        iframe.webkitRequestFullscreen();
-      } else if (iframe.msRequestFullscreen) { /* IE11 */
-        iframe.msRequestFullscreen();
-      }
-    });
-  </script>
+        playButton.addEventListener('click', () => {
+            // Show the iframe and hide the button
+            gameFrame.style.display = 'block';
+            playButton.style.display = 'none';
+
+            // Request fullscreen
+            const iframeContainer = gameFrame;
+            if (iframeContainer.requestFullscreen) {
+                iframeContainer.requestFullscreen();
+            } else if (iframeContainer.webkitRequestFullscreen) { // Safari
+                iframeContainer.webkitRequestFullscreen();
+            } else if (iframeContainer.msRequestFullscreen) { // Older IE/Edge
+                iframeContainer.msRequestFullscreen();
+            }
+        });
+
+        // Ensure iframe is resized for landscape mode on mobile
+        window.addEventListener('resize', () => {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(err => {
+                    console.warn('Orientation lock failed:', err);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
