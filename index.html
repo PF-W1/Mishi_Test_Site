@@ -1,91 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Mishi Quest</title>
-  <meta name="description" content="Mishi Quest is a top down shooter where you play as a Mushroom named Mishi.">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    #game-container {
-      display: none; /* Initially hidden */
-      width: 100%;
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 9999;
-    }
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    #run-button {
-      display: inline-block;
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #333;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itch.io Game Embed</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #000;
+        }
+        iframe {
+            border: none;
+            width: 100%;
+            height: 100%;
+            display: none; /* Hide initially */
+        }
+        #play-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #007BFF;
+            color: white;
+            font-size: 1.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #play-button:active {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <button id="run-button">Run Game</button>
-  <div id="game-container">
-    <iframe
-      id="game-iframe"
-      allowfullscreen
-      webkitallowfullscreen
-      mozallowfullscreen
-      msallowfullscreen
-      src="https://itch.io/embed-upload/12097642?color=333333"
-    ></iframe>
-  </div>
-  <script>
-    const runButton = document.getElementById('run-button');
-    const gameContainer = document.getElementById('game-container');
-    const iframe = document.getElementById('game-iframe');
+    <button id="play-button">Play Fullscreen</button>
+    <iframe id="game-frame" src="https://itch.io/embed-upload/12097642?color=333333"></iframe>
 
-    runButton.addEventListener('click', async () => {
-      gameContainer.style.display = 'block';
-      document.body.style.overflow = 'hidden'; // Disable scrolling when game is fullscreen
+    <script>
+        const playButton = document.getElementById('play-button');
+        const gameFrame = document.getElementById('game-frame');
 
-      try {
-        if (screen.orientation && screen.orientation.lock) {
-          await screen.orientation.lock('landscape'); // Lock to landscape mode
-        }
-      } catch (err) {
-        console.warn('Orientation lock not supported:', err);
-      }
+        playButton.addEventListener('click', () => {
+            // Show the iframe and hide the button
+            gameFrame.style.display = 'block';
+            playButton.style.display = 'none';
 
-      if (gameContainer.requestFullscreen) {
-        gameContainer.requestFullscreen();
-      } else if (gameContainer.webkitRequestFullscreen) {
-        gameContainer.webkitRequestFullscreen();
-      } else if (gameContainer.msRequestFullscreen) {
-        gameContainer.msRequestFullscreen();
-      }
-    });
+            // Request fullscreen
+            const iframeContainer = gameFrame;
+            if (iframeContainer.requestFullscreen) {
+                iframeContainer.requestFullscreen();
+            } else if (iframeContainer.webkitRequestFullscreen) { // Safari
+                iframeContainer.webkitRequestFullscreen();
+            } else if (iframeContainer.msRequestFullscreen) { // Older IE/Edge
+                iframeContainer.msRequestFullscreen();
+            }
+        });
 
-    document.addEventListener('fullscreenchange', () => {
-      if (!document.fullscreenElement) {
-        gameContainer.style.display = 'none'; // Exit game container when exiting fullscreen
-        document.body.style.overflow = ''; // Restore scrolling
-      }
-    });
-  </script>
+        // Ensure iframe is resized for landscape mode on mobile
+        window.addEventListener('resize', () => {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(err => {
+                    console.warn('Orientation lock failed:', err);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
